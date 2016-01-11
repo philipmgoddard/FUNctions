@@ -1,0 +1,14 @@
+Package: FUNctions
+Type: Package
+Title: FUNctions are Phil's FUN functions
+Version: 0.0.1
+Date: 2015-09-22
+Author: Phil Goddard
+Maintainer: Phil Goddard <pmgoddard89@gmail.com>
+Description: 
+  Initially this will be a hotch-potch collection of things that make my life easier. Who knows what
+  it will evolve in to.
+License: GPL
+Imports:
+  grid,
+  ggplot2
