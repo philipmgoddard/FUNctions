@@ -175,10 +175,13 @@ ggplotListDens <- function(df, outcome) {
   return(plotList)
 }
 
+
+
+
 #' Make a list of stacked histograms plots using ggplot
 #'
 #' @author Philip Goddard
-#' @param df a data frame containing categorical data
+#' @param df a data frame containing count data
 #' @param outcome the groups of the data
 #' @import ggplot2
 #' @export
@@ -193,20 +196,13 @@ ggplotListHist <- function(df, outcome) {
   j <- 1
   plotList <- list()
   for(i in colNames){
-    if(class(df[, i]) == "factor") {
-      plt <- ggplot(df, aes_string(x = i), environment = .e) +
-        geom_histogram(aes(color = outcome), alpha = 0.4) +
-        scale_color_manual(values = philTheme()) +
-        theme_bw() +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
-    } else {
-      bnwdth <- max(range(df[, i])) / min(max(range(df[, i])), 30)
-      plt <- ggplot(df, aes_string(x = i), environment = .e) +
-        geom_histogram(aes(color = outcome), alpha = 0.4, binwidth = bnwdth) +
-        scale_color_manual(values = philTheme()) +
-        theme_bw() +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
-    }
+    
+    bnwdth <- max(range(df[, i])) / min(max(range(df[, i])), 30)
+    plt <- ggplot(df, aes_string(x = i), environment = .e) +
+      geom_histogram(aes(color = outcome), alpha = 0.4, binwidth = bnwdth) +
+      scale_color_manual(values = philTheme()) +
+      theme_bw() +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
     
     assign(paste("plot", j, sep = ""), plt)
     j <- j + 1
@@ -214,6 +210,38 @@ ggplotListHist <- function(df, outcome) {
   }
   return(plotList)
 }
+
+#' Make a list of stacked bar charts plots using ggplot
+#'
+#' @author Philip Goddard
+#' @param df a data frame containing categorical data
+#' @param outcome the groups of the data
+#' @import ggplot2
+#' @export
+ggplotListBar <- function(df, outcome) {
+  stopifnot(is.data.frame(df))
+  stopifnot(is.factor(outcome))
+  stopifnot(nrow(df) == length(outcome))
+  
+  .e <- environment()
+  colNames <- names(df)
+  
+  j <- 1
+  plotList <- list()
+  for(i in colNames){
+    plt <- ggplot(df, aes_string(x = i), environment = .e) +
+      geom_bar(aes(color = outcome), alpha = 0.4) +
+      scale_color_manual(values = philTheme()) +
+      theme_bw() +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+    
+    assign(paste("plot", j, sep = ""), plt)
+    j <- j + 1
+    plotList[[i]] <- plt
+  }
+  return(plotList)
+}
+
 
 #' Make a multiplot from a list containing ggplots
 #' 

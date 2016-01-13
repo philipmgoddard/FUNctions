@@ -7,7 +7,7 @@
 ggplotListHist(df, outcome)
 }
 \arguments{
-\item{df}{a data frame containing categorical data}
+\item{df}{a data frame containing count data}
 
 \item{outcome}{the groups of the data}
 }
